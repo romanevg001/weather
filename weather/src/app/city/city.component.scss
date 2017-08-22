@@ -1,7 +1,24 @@
 .map {
     width: 100%;
-    min-height: 400px;
-    height: 80%;
+    min-height: 100px;
+    height: calc(100% - 50px);
+    background: #999;
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+}
+
+h5 {
+    background: #fff;
+    position: absolute;
+    z-index: 2;
+    margin: 0;
+    padding: 10px 20px;
+    span {
+        font-weight: normal;
+        font-size: .95em;
+    }
 }
 
 :host /deep/ {

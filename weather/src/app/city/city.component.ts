@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { Http, Headers,Jsonp } from '@angular/http';
 import { Marker, Map, LayerGroup, TileLayer } from "leaflet";
 declare var L: any;
-import { Observable } from 'rxjs/Rx';
+import { CityService } from './city.service';
+import { ShareService } from '../services/share.service';
+
 
 @Component({
   selector: 'app-city',
@@ -13,13 +14,12 @@ export class CityComponent implements OnInit {
   map: Map;
   currentLocationMarker: Marker;
   mapLayer: LayerGroup = L.featureGroup();
-  url;
-  // typesMapsList: TileLayer[] = [];
-  // nameTypesMapsList: string[] = [];
+  userPlace:string;
+
 
   constructor(
-    private _http: Http,
-    private _jsonp: Jsonp
+    private _cityService: CityService,
+    private _shareService: ShareService,
   ) {
   }
 
@@ -30,16 +30,23 @@ export class CityComponent implements OnInit {
   getCurrentLocation() {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition((position)=>{
+        
         console.log(position.coords.latitude, position.coords.longitude)
+        this.getCityName(position.coords.latitude, position.coords.longitude);
         this.map.panTo(new L.LatLng(position.coords.latitude, position.coords.longitude));
         if(!this.currentLocationMarker) this.addCurrentLocationMarker(position.coords.latitude, position.coords.longitude);
       });
     }
   }
 
+  getCityName(lat,lng){
+    this._cityService.getPlace(lat,lng).subscribe((res)=>{
+        this.userPlace = (res.length > 0) ? res[0].location : '';
+    })
+  }
+
 
   addCurrentLocationMarker(lat,lng) {
-    console.log('boom')
     var icon = new L.divIcon({
         className:'location-marker',
         iconSize: [18,18],
@@ -49,7 +56,6 @@ export class CityComponent implements OnInit {
     this.currentLocationMarker.addTo(this.map);
     this.currentLocationMarker.setLatLng([lat,lng]);
 
-    this.getWeather(lat,lng);
   }
 
   initMapLayer(){
@@ -61,10 +67,14 @@ export class CityComponent implements OnInit {
     this.mapLayer.addLayer(newTypeMaps);
     newTypeMaps.bringToFront();
     this.mapLayer.addTo(this.map);
+    this._shareService.loaderHandler('hide');
+    
   }
 
 
   mapInit() {
+      this._shareService.loaderHandler('show');
+    
     this.map = L.map("map-city", {
         zoomControl: false,
         zoom: 12,
@@ -102,46 +112,9 @@ export class CityComponent implements OnInit {
 
   mapClick(e){
 
-    this.getWeather(e.latlng.lat, e.latlng.lng)
 
   }
 
-  getWeather(latitude, longitude){
-    // this._http.get(` https://api.weather.yandex.ru/v1/forecast?lat=${latitude}&lon=${longitude}`)
-  
-    // .subscribe((res)=>{
-    //   console.log(res)
-    // });
-    
- this._jsonp.get(`https://yandex.ru/pogoda/front/map/forecast?lt=${latitude},${longitude}&rb=${latitude},${longitude}&zoom=12&lang=ru`,{
-   
- })
-  
-    .subscribe((res)=>{
-      console.log(res)
-    });
-    // var mashapeKey = 'O9p2cWOU18mshKOD0m6aBMMVXOrxp1PaIUYjsniijuS94Ib56u';
-    // this._http.get(`https://simple-weather.p.mashape.com/aqi?lat=${latitude}&lng=${longitude}`, {
-    //     headers: new Headers({
-    //       'X-Mashape-Key': mashapeKey,
-    //       'Accept': 'text/plain'
-    //     })
-    //   })
-    //   .subscribe((res)=>{
-    //     this.url = res.url;
-    //     console.log(res)
-    //   });
-  
-  }
 
 }
 
-
-
-
-//  this.http.get(`https://simple-weather.p.mashape.com/aqi?lat=${latitude}&lng=${longitude}`, {
-//       headers: new Headers({
-//         'X-Mashape-Key': this.mashapeKey,
-//         'Accept': 'text/plain'
-//       })
-//     });

@@ -1,4 +1,2 @@
-<h3>Your city: </h3>
-{{url}}
-<img [src]="url" alt="">
+<h5 *ngIf="userPlace">Your place: <span>{{userPlace}}</span></h5>
 <div id="map-city" class="map"></div>

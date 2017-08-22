@@ -1,0 +1,30 @@
+.avatar {
+    width: 30px;
+    height: 30px;
+    border-radius: 50px;
+    vertical-align: middle;
+    margin-right: 1em;
+}
+
+.table-list {
+    display: flex;
+    overflow: auto;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-content: space-between;
+    height: calc(100% - 50px);
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    &>a{
+        padding: 25px;
+        border: 1px dotted #999; 
+        margin: 15px;
+        border-radius: 30px;
+        text-decoration: none;
+        &:hover {
+           border: 1px solid #999; 
+        }
+    }
+}

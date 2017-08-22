@@ -1,0 +1,5 @@
+<div class="table-list">
+  <a *ngFor="let user of userList"  [routerLink]="['/users/',user.id]">
+    <img [src]="user.avatar_url" class="avatar" alt=""><span>{{user.login}}</span>
+  </a>
+</div>

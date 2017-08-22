@@ -7,6 +7,7 @@ import { HttpModule,JsonpModule } from '@angular/http';
 
 import { AppComponent } from './app.component';
 import { routes } from './app.routes';
+import { ShareService } from './services/share.service';
 
 @NgModule({
   declarations: [
@@ -26,7 +27,7 @@ import { routes } from './app.routes';
       }
     )
   ],
-  providers: [],
+  providers: [ShareService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
