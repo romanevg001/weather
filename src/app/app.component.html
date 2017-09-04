@@ -1,6 +1,13 @@
 <menu class="main-menu">
   <li><a [routerLink]="['city']" routerLinkActive="current">City</a></li>
   <li><a  [routerLink]="['users']" routerLinkActive="current">Users</a></li>
+  <li>
+    /{{counter | async}}/
+    /{{count | async}}/
+    /{{countMembers | async}}/
+    /{{countMembers2 | async}}/
+  <button type="button" class="btn btn-large btn-block btn-default" (click)="addDiggit()">add</button>
+  </li>
 </menu>
 <div *ngIf="isLoaderShow" class="loader"></div>
 <router-outlet> </router-outlet>  
